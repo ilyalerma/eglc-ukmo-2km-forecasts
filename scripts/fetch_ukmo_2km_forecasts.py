@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Download UKMO UKV 2km historical forecasts at Heathrow into ./data/."""
+"""Download UKMO UKV 2km historical forecasts at London City Airport (EGLC) into ./data/."""
 
 from __future__ import annotations
 
@@ -11,8 +11,10 @@ from pathlib import Path
 import pandas as pd
 import requests
 
-LAT = 51.4706
-LON = -0.4619
+# London City Airport (EGLC) — Polymarket resolution station
+ICAO = "EGLC"
+LAT = 51.504797
+LON = 0.051542
 MODEL = "ukmo_uk_deterministic_2km"
 TZ = "Europe/London"
 API = "https://historical-forecast-api.open-meteo.com/v1/forecast"
@@ -80,6 +82,7 @@ def fetch_daily_range(start: date, end: date) -> pd.DataFrame:
         df = df.rename(columns={"time": "date"})
         df["date"] = pd.to_datetime(df["date"])
         df["model"] = MODEL
+        df["station"] = ICAO
         df["latitude"] = payload.get("latitude")
         df["longitude"] = payload.get("longitude")
         frames.append(df)
@@ -109,6 +112,7 @@ def fetch_hourly_range(start: date, end: date) -> pd.DataFrame:
         df = df.rename(columns={"time": "valid_utc"})
         df["valid_utc"] = pd.to_datetime(df["valid_utc"], utc=True)
         df["model"] = MODEL
+        df["station"] = ICAO
         frames.append(df)
         logging.info("Hourly %s → %s (%d rows)", a, b, len(df))
     if not frames:

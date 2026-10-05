@@ -21,8 +21,10 @@ from pathlib import Path
 import pandas as pd
 import requests
 
-LAT = 51.4706
-LON = -0.4619
+# London City Airport (EGLC)
+ICAO = "EGLC"
+LAT = 51.504797
+LON = 0.051542
 MODEL = "ukmo_uk_deterministic_2km"
 TZ = "Europe/London"
 LEADS = (1, 2, 3)
@@ -73,6 +75,7 @@ def fetch_single_run_leads(issue_date: date) -> list[dict]:
         if tmax is None or pd.isna(tmax):
             continue
         rows.append({
+            "station": ICAO,
             "target_date": target.isoformat(),
             "lead_days": lead,
             "issue_date": issue_date.isoformat(),
@@ -117,6 +120,7 @@ def fetch_previous_runs_chunk(start: date, end: date) -> list[dict]:
                 continue
             issue_d = target - timedelta(days=lead)
             rows.append({
+                "station": ICAO,
                 "target_date": target.isoformat(),
                 "lead_days": lead,
                 "issue_date": issue_d.isoformat(),
