@@ -25,6 +25,8 @@ Open-Meteo snaps to the nearest grid cell (~51.46°N, 0.45°W, elevation ~23 m).
 
 Values are **what the model predicted**, not observations.
 
+**Coverage in current bundle:** daily and hourly from **2022-01-01** through **2026-10-03** (API lag ~2 days). UKMO 2 km fields are often empty before **~2022-03**; use rows with non-null `temperature_2m_max` for analysis.
+
 ## Refresh
 
 ```bash
